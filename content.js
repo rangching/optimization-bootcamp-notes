@@ -11,7 +11,7 @@ window.SERIES = {
   short: "最佳化",
   brand: "min<b>·</b>f(x)<span class=\"long\"> 最佳化學習網頁</span>",
   storeKey: "progress-series-45699f",
-  eyebrow: "Optimization Bootcamp · 中文動畫學習系列 · EP1–EP2",
+  eyebrow: "Optimization Bootcamp · 中文動畫學習系列 · 全 44 集路線",
   heroTitle: "在所有允許的選擇裡，<span class=\"hl\">哪一個最好？</span>",
   lead: "訓練大型語言模型、讓火箭垂直降落、排好上千架飛機的航班，全都能寫成同一行式子。這個系列用動畫一步一步拆開它：先看三題、再看影片、動手算一次，最後回頭再答一次。",
   tagline: "用動畫看懂最佳化：目標函數、限制條件、凸性與梯度。",
@@ -20,7 +20,7 @@ window.SERIES = {
   footer: "《最佳化：驅動現代世界的數學引擎》學習網頁 · 延續 Steve Brunton《Optimization Bootcamp》改編，畫面與講解全部重做 · 進度只存在這台裝置的瀏覽器裡",
   source: { name: "Steve Brunton《Optimization Bootcamp》", url: "https://youtu.be/lPBPbGmw1_4", license: "YouTube 標準授權：僅引用與改寫，畫面全部重做" },
   phases: [
-    { id: 1, name: "第一階段｜認識最佳化問題", range: "EP1–EP2", desc: "先建立整體地圖：最佳化問題長什麼樣子、應用在哪裡，再把標準形式拆成目標函數、限制條件與可行域，學會判斷一個問題難不難。" }
+    { id: 1, name: "階段 1｜最佳化入門營（Ch.1）", range: "EP1–EP2", desc: "先建立整體地圖：最佳化問題長什麼樣子、應用在哪裡，再把標準形式拆成目標函數、限制條件與可行域，學會判斷一個問題難不難。" }
   ]
 };
 
@@ -245,3 +245,83 @@ prob.value      # min</code></pre>
     next: "下一集起進入系列的深入部分：從梯度與凸性的幾何直覺開始，再到梯度下降、隨機梯度下降與牛頓法。（製作中）"
   }
 ];
+
+// ============================================================
+//  完整學習路線（依教科書 10 個部分與各小節規劃，2026-11-14）
+//  來源：Brunton《Optimization》書目（Cambridge 2026）與 YouTube 播放清單
+//  status：done＝影片完成；ready＝原片已公開、待製作；planned＝原片尚未公開
+//  lectures：對應的原片 [編號, YouTube ID, 原片標題, 片長]
+//  注意：觀眾可見文字用「小節／步驟」，教科書以「Ch.」「§」標示
+// ============================================================
+window.ROADMAP = {
+  asOf: "2026-11-14",
+  playlist: "https://www.youtube.com/playlist?list=PLMrJAkhIeNNS3UT10txhV70ZwIeIjkMQp",
+  book: { name: "Optimization: A Bootcamp for Machine Learning, Inverse Problems, and Control（Cambridge University Press, 2026）", url: "https://www.cambridge.org/core/books/optimization/D030795E11729431A9381DC612EE7602" },
+  note: "原播放清單共 44 支，其中 15 支已公開並有正式標題、14 支為未公開列出的梯度方法影片、15 支尚未公開。尚未公開的部分先依教科書小節排定，原片公開後再調整。",
+  phases: [
+    { id: 1, ch: 1, name: "最佳化入門營", en: "Optimization Bootcamp", desc: "建立整體地圖：問題的零件、應用、凸性、梯度與限制條件。", eps: [
+      { no: 1, unit: "u01", title: "最佳化導論：驅動現代世界的數學引擎", sec: "總覽", status: "done", lectures: [[1, "lPBPbGmw1_4", "Optimization: A Bootcamp for Machine Learning, Inverse Problems, and Control", "22:28"]] },
+      { no: 2, unit: "u02", title: "拆解最佳化問題：一張解剖圖看懂每個零件", sec: "§1.1", status: "done", lectures: [[2, "WK4p445iQzI", "The Anatomy of an Optimization Problem", "25:36"]] },
+      { no: 3, title: "最佳化的應用：機器學習、逆問題與控制", sec: "§1.5", status: "ready", lectures: [[3, "CS1wrmxiWqc", "Applications of Optimization", "25:23"]] },
+      { no: 4, title: "凸性入門：凸集合與保持凸性的運算", sec: "§1.2", status: "ready", lectures: [[4, "9WXVgQFFsDI", "Convexity 101", "14:58"], [5, "eUhnyZ--kGY", "Convex Sets", "14:25"], [6, "npVcj7AJRcg", "Intersections of Convex Sets are Convex", "9:12"], [7, "MCE2D6atrzE", "Affine Transformations and Convexity", "6:29"]] },
+      { no: 5, title: "支撐超平面與凸函數：範數、激活函數為什麼是凸的", sec: "§1.2", status: "ready", lectures: [[8, "VrdkzCiLe0s", "Dual Space of Supporting Hyperplanes", "8:45"], [9, "l5OUNaVdxqs", "Convex Functions", "16:35"], [10, "41SnCWFtTnU", "Norms are Convex", "18:51"], [11, "OCXigVQ6r9o", "Activation Functions in Machine Learning", "6:40"]] },
+      { no: 6, title: "Jensen 不等式與「局部極小就是全域極小」", sec: "§1.2", status: "ready", lectures: [[12, "GWuAGTjfRs8", "Jensen's Inequality", "14:22"], [13, "Ab4WatONh9E", "Properties of Convex Functions", "11:39"], [14, "D-Qy9QfJgQg", "Convexity Implies that Local Minima are Global Minima", "20:26"], [15, "Nadc25QqVTw", "Convex Feasible Sets", "9:41"]] },
+      { no: 7, title: "梯度與最佳化的幾何", sec: "§1.3", status: "planned", lectures: [] },
+      { no: 8, title: "限制條件與 Lagrange 乘數", sec: "§1.4", status: "planned", lectures: [] }
+    ] },
+    { id: 2, ch: 2, name: "梯度方法", en: "Gradient Based Optimization", desc: "從梯度下降出發，一路到動量、Adam、牛頓法與擬牛頓法。原播放清單已有 14 支未公開列出的梯度影片。", eps: [
+      { no: 9, title: "梯度下降：步長、收斂與病態條件", sec: "§2.1", status: "planned", lectures: [] },
+      { no: 10, title: "動量法：讓球帶著慣性滾下山", sec: "§2.2", status: "planned", lectures: [] },
+      { no: 11, title: "隨機梯度下降與 Adam", sec: "§2.3", status: "planned", lectures: [] },
+      { no: 12, title: "牛頓法與線搜尋", sec: "§2.4–2.5", status: "planned", lectures: [] },
+      { no: 13, title: "擬牛頓法 BFGS 與梯度的向量微積分恆等式", sec: "§2.6–2.7", status: "planned", lectures: [] }
+    ] },
+    { id: 3, ch: 3, name: "線性規劃", en: "Linear Programming", desc: "多面體、頂點與單純形法；對偶與整數規劃為什麼突然變難。", eps: [
+      { no: 14, title: "線性規劃：問題寫法與多面體的高維幾何", sec: "§3.1–3.2", status: "planned", lectures: [] },
+      { no: 15, title: "Dantzig 單純形法與單純形表", sec: "§3.3–3.4", status: "planned", lectures: [] },
+      { no: 16, title: "線性規劃的對偶，與整數規劃的 NP 困難", sec: "§3.5–3.6", status: "planned", lectures: [] }
+    ] },
+    { id: 4, ch: 4, name: "最小平方迴歸", en: "Least-Squares Regression", desc: "SVD、正則化、二次規劃，再到非線性最小平方與共軛梯度。", eps: [
+      { no: 17, title: "最小平方迴歸與奇異值分解（SVD）", sec: "§4.1–4.2", status: "planned", lectures: [] },
+      { no: 18, title: "最小範數解、條件數與正則化", sec: "§4.3–4.4", status: "planned", lectures: [] },
+      { no: 19, title: "有限制的最小平方與二次規劃", sec: "§4.5–4.6", status: "planned", lectures: [] },
+      { no: 20, title: "Gauss–Newton 法與共軛梯度法", sec: "§4.7–4.8", status: "planned", lectures: [] }
+    ] },
+    { id: 5, ch: 5, name: "非光滑與全域最佳化", en: "Nonsmooth and Global Optimization", desc: "沒有梯度、或地形太崎嶇時：近端方法、無梯度搜尋與群體演算法。", eps: [
+      { no: 21, title: "近端梯度演算法：處理不可微的目標函數", sec: "§5.1", status: "planned", lectures: [] },
+      { no: 22, title: "Nelder–Mead 下坡單純形與模擬退火", sec: "§5.2–5.3", status: "planned", lectures: [] },
+      { no: 23, title: "演化演算法與分散式群體最佳化", sec: "§5.4–5.5", status: "planned", lectures: [] }
+    ] },
+    { id: 6, ch: 6, name: "限制條件與對偶", en: "Constraints and Duality", desc: "Lagrange、KKT、對偶、內點法、ADMM，以及變分法。", eps: [
+      { no: 24, title: "Lagrange 乘數：等高線與限制線相切", sec: "§6.1", status: "planned", lectures: [] },
+      { no: 25, title: "KKT 條件：不等式限制的最佳性", sec: "§6.2", status: "planned", lectures: [] },
+      { no: 26, title: "對偶：每個最佳化問題都有一個影子問題", sec: "§6.3", status: "planned", lectures: [] },
+      { no: 27, title: "內點法與 ADMM", sec: "§6.4–6.5", status: "planned", lectures: [] },
+      { no: 28, title: "變分法與 Euler–Lagrange 方程式", sec: "§6.6", status: "planned", lectures: [] }
+    ] },
+    { id: 7, ch: 7, name: "貝氏建模與估計", en: "Bayesian Modeling and Estimation", desc: "把估計寫成最佳化：最大概似、貝氏推論、EM 與高斯混合模型。", eps: [
+      { no: 29, title: "統計參數估計與貝氏推論", sec: "§7.1–7.2", status: "planned", lectures: [] },
+      { no: 30, title: "密度估計、經驗先驗與 EM／高斯混合模型", sec: "§7.3–7.4", status: "planned", lectures: [] },
+      { no: 31, title: "從統計估計看最小平方迴歸", sec: "§7.5", status: "planned", lectures: [] }
+    ] },
+    { id: 8, ch: 8, name: "逆問題中的最佳化", en: "Optimization for Inverse Problems", desc: "從結果反推原因：醫學影像、計算成像、PDE 限制反演與系統識別。", eps: [
+      { no: 32, title: "逆問題的數學形式與經典例子", sec: "§8.1–8.2", status: "planned", lectures: [] },
+      { no: 33, title: "醫學影像與計算成像", sec: "§8.3–8.4", status: "planned", lectures: [] },
+      { no: 34, title: "結合物理的影像反演與 PDE 限制反演", sec: "§8.5–8.6", status: "planned", lectures: [] },
+      { no: 35, title: "系統識別：從資料找出動態模型", sec: "§8.7", status: "planned", lectures: [] }
+    ] },
+    { id: 9, ch: 9, name: "控制中的最佳化", en: "Optimization for Control", desc: "LQR、非線性最優控制、動態規劃、強化學習、MPC 與 LMI。", eps: [
+      { no: 36, title: "線性最優控制：LQR 與 Riccati 方程式", sec: "§9.1", status: "planned", lectures: [] },
+      { no: 37, title: "非線性最優控制與動態規劃", sec: "§9.2、§9.4", status: "planned", lectures: [] },
+      { no: 38, title: "強化學習：用最佳化學會決策", sec: "§9.3", status: "planned", lectures: [] },
+      { no: 39, title: "模型預測控制與線性矩陣不等式", sec: "§9.5–9.6", status: "planned", lectures: [] }
+    ] },
+    { id: 10, ch: 10, name: "機器學習中的最佳化", en: "Optimization for Machine Learning", desc: "自動微分、反向傳播、神經網路訓練、深度強化學習與物理約束學習。", eps: [
+      { no: 40, title: "自動微分：電腦怎麼算出梯度", sec: "§10.1", status: "planned", lectures: [] },
+      { no: 41, title: "反向傳播", sec: "§10.2", status: "planned", lectures: [] },
+      { no: 42, title: "神經網路訓練的最佳化", sec: "§10.3", status: "planned", lectures: [] },
+      { no: 43, title: "深度強化學習", sec: "§10.4", status: "planned", lectures: [] },
+      { no: 44, title: "物理約束的機器學習", sec: "§10.5", status: "planned", lectures: [] }
+    ] }
+  ]
+};

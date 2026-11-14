@@ -86,6 +86,29 @@ section.block{padding:28px 0}
 .phase-head h3{font-size:19px}
 .phase-head .rng{font-family:var(--f-mono);font-size:12px;color:var(--bg);background:var(--r);padding:1px 8px;border-radius:99px}
 .phase-head p{margin:0;color:var(--dim);font-size:14px;flex-basis:100%}
+.rm-sum{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.rm-tile{display:block;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;color:var(--text);text-decoration:none!important;transition:border-color .15s,transform .15s}
+.rm-tile:hover{border-color:var(--axis);transform:translateY(-2px)}
+.rm-tile .k{font-family:var(--f-mono);font-size:11.5px;color:var(--dim)}
+.rm-tile h4{margin:2px 0 6px;font-size:16px;line-height:1.35}
+.rm-tile .rng{font-family:var(--f-mono);font-size:12px;color:var(--dim)}
+.rm-bar{display:flex;gap:3px;margin-top:8px}.rm-bar i{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.rm-bar i.done{background:var(--accent)}.rm-bar i.ready{background:var(--x)}
+.rm-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--dim);margin:0 0 18px}
+.rm-legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px;background:var(--line)}
+.rm-legend .done::before{background:var(--accent)}.rm-legend .ready::before{background:var(--x)}
+.rm-phase{scroll-margin-top:80px;margin-bottom:26px}
+.rm-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.rm-ep{display:grid;grid-template-columns:64px 1fr auto;gap:4px 14px;align-items:start;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--line);border-radius:10px;padding:10px 14px}
+.rm-ep.done{border-left-color:var(--accent)}.rm-ep.ready{border-left-color:var(--x)}
+.rm-ep .n{font-family:var(--f-mono);font-size:13px;color:var(--dim);padding-top:2px}
+.rm-ep .t{font-weight:600;line-height:1.45}.rm-ep .t a{color:var(--text)}
+.rm-ep .sec{font-family:var(--f-mono);font-size:12px;color:var(--dim);white-space:nowrap;padding-top:2px}
+.rm-ep .lec{grid-column:2/4;font-size:13px;color:var(--dim);line-height:1.6}
+.rm-ep .lec a{color:var(--dim);text-decoration:underline;text-decoration-color:var(--line)}
+.rm-ep .st{font-size:12px;margin-left:8px;font-weight:400;white-space:nowrap}
+.rm-ep.done .st{color:var(--accent)}.rm-ep.ready .st{color:var(--x)}.rm-ep.planned .st{color:var(--dim)}
+@media (max-width:520px){.rm-ep{grid-template-columns:44px 1fr}.rm-ep .sec{grid-column:2}.rm-ep .lec{grid-column:1/3}.rm-ep .st{display:block;margin:2px 0 0}}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
 .ucard{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;color:var(--text);text-decoration:none!important;transition:transform .15s,border-color .15s}
 .ucard:hover{transform:translateY(-2px);border-color:var(--axis)}
@@ -243,6 +266,7 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:22px 0 40px;colo
     <a class="brand" id="brand" href="#home"></a>
     <nav class="main" id="nav">
       <a href="#home" data-nav="home">單元</a>
+      <a href="#roadmap" data-nav="roadmap">路線圖</a>
       <a href="#glossary" data-nav="glossary">術語表</a>
       <a href="#me" data-nav="me">我的學習</a>
     </nav>
@@ -338,6 +362,7 @@ function viewHome() {
       <div class="actions">
         ${trailer}
         <a class="btn primary" href="#${UNITS[0].id}">從 EP${UNITS[0].no} 開始</a>
+        ${window.ROADMAP ? `<a class="btn" href="#roadmap">學習路線圖</a>` : ""}
         <a class="btn" href="#glossary">術語表</a>
         <a class="btn" href="#me">我的學習</a>
         ${playlist}
@@ -363,9 +388,10 @@ function viewHome() {
   </section>
 
   <section class="block">
-    <div class="sec-head"><h2>學習路線</h2><span class="dim" style="font-size:14px">全 ${UNITS.length} 集 · 已上架 ${ready} 集，其餘影片連結預留中</span></div>
+    <div class="sec-head"><h2>已完成的單元</h2><span class="dim" style="font-size:14px">已完成 ${UNITS.length} 集 · 已上架 ${ready} 集，其餘影片連結預留中</span></div>
     ${phases}
-  </section>`;
+  </section>
+  ${window.ROADMAP ? roadmapSummary() : ""}`;
   math(app);
   startHero();
 }
@@ -489,6 +515,47 @@ function tabQuiz(u, s) {
     ? `<div class="row" style="justify-content:space-between"><div><div class="score">${correct}／${u.quiz.length}</div><span class="dim">最佳紀錄 ${s.quizBest ?? correct}／${u.quiz.length}</span></div><button class="btn" data-act="quizReset">重做一次</button></div>`
     : `<span class="dim">已作答 ${answered}／${u.quiz.length}</span>`;
   return `<div class="card">${summary}</div><div class="card">${items}</div>`;
+}
+
+/* ---------- roadmap（完整學習路線） ---------- */
+const RM_ST = { done: "影片完成", ready: "原片已公開・待製作", planned: "原片未公開・依教科書預排" };
+function rmEps() { return window.ROADMAP.phases.flatMap(p => p.eps); }
+function roadmapSummary() {
+  const R = window.ROADMAP, all = rmEps(), n = s => all.filter(e => e.status === s).length;
+  const tiles = R.phases.map(p => {
+    const a = p.eps[0].no, b = p.eps[p.eps.length - 1].no;
+    return `<a class="rm-tile" href="#roadmap/p${p.id}"><div class="k">階段 ${p.id}／${R.phases.length} · Ch.${p.ch}</div><h4>${esc(p.name)}</h4>
+      <div class="rng">EP${pad2(a)}–EP${pad2(b)} · ${p.eps.length} 集</div>
+      <div class="rm-bar">${p.eps.map(e => `<i class="${e.status}" title="EP${pad2(e.no)} ${esc(e.title)}"></i>`).join("")}</div></a>`;
+  }).join("");
+  return `<section class="block">
+    <div class="sec-head"><h2>完整學習路線</h2><span class="dim" style="font-size:14px">共 ${all.length} 集 · 完成 ${n("done")} · 待製作 ${n("ready")} · 預排 ${n("planned")}</span></div>
+    <p class="rm-legend"><span class="done">影片完成</span><span class="ready">原片已公開・待製作</span><span>原片未公開・依教科書預排</span></p>
+    <div class="rm-sum">${tiles}</div>
+    <p style="margin-top:14px"><a class="btn" href="#roadmap">看 ${all.length} 集完整路線圖 →</a></p>
+  </section>`;
+}
+function viewRoadmap() {
+  const R = window.ROADMAP, all = rmEps();
+  const phases = R.phases.map(p => `
+    <div class="rm-phase" id="rm-p${p.id}">
+      <div class="phase-head"><h3>階段 ${p.id}｜${esc(p.name)}</h3><span class="rng">Ch.${p.ch} ${esc(p.en)}</span><p>${esc(p.desc)}</p></div>
+      <ol class="rm-list">${p.eps.map(e => {
+        const u = e.unit && byId[e.unit];
+        const title = u ? `<a href="#${u.id}">${esc(e.title)}</a>` : esc(e.title);
+        const lec = e.lectures.length
+          ? `<div class="lec">原片：${e.lectures.map(([k, id, t, d]) => `<a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">#${k} ${esc(t)}</a>（${d}）`).join("、")}</div>`
+          : "";
+        return `<li class="rm-ep ${e.status}"><span class="n">EP${pad2(e.no)}</span><span class="t">${title}<span class="st">${RM_ST[e.status]}</span></span><span class="sec">${esc(e.sec)}</span>${lec}</li>`;
+      }).join("")}</ol>
+    </div>`).join("");
+  app.innerHTML = `
+  <div class="crumb"><a href="#home">首頁</a> / 學習路線圖</div>
+  <div class="sec-head"><h2>學習路線圖</h2><span class="dim" style="font-size:14px">${R.phases.length} 個階段 · ${all.length} 集 · 更新於 ${esc(R.asOf)}</span></div>
+  <div class="card"><p style="margin:0 0 8px">路線依 Steve Brunton 的教科書 <a href="${esc(R.book.url)}" target="_blank" rel="noopener">${esc(R.book.name)}</a> 的 10 個部分排列，每一集對應書中的小節（§），並連到 <a href="${esc(R.playlist)}" target="_blank" rel="noopener">原播放清單</a> 的影片。</p>
+    <p class="dim" style="margin:0;font-size:14px">${esc(R.note)}</p></div>
+  <p class="rm-legend"><span class="done">影片完成</span><span class="ready">原片已公開・待製作</span><span>原片未公開・依教科書預排</span></p>
+  ${phases}`;
 }
 
 function viewGlossary(q = "") {
@@ -648,7 +715,8 @@ function route() {
     viewUnit(byId[a], tab);
     document.title = `EP${pad2(byId[a].no)} ${byId[a].title}｜${SERIES.short}`;
     if (!same) window.scrollTo(0, 0);
-  } else if (a === "glossary") { cur = { view: a }; viewGlossary(); document.title = `術語表｜${SERIES.short}`; window.scrollTo(0, 0); }
+  } else if (a === "roadmap" && window.ROADMAP) { cur = { view: a }; viewRoadmap(); document.title = `學習路線圖｜${SERIES.short}`; const el = b && document.getElementById("rm-" + b); el ? el.scrollIntoView() : window.scrollTo(0, 0); }
+  else if (a === "glossary") { cur = { view: a }; viewGlossary(); document.title = `術語表｜${SERIES.short}`; window.scrollTo(0, 0); }
   else if (a === "me") { cur = { view: a }; viewMe(); document.title = `我的學習｜${SERIES.short}`; window.scrollTo(0, 0); }
   else { cur = { view: "home" }; viewHome(); document.title = SERIES.short; window.scrollTo(0, 0); }
 }
